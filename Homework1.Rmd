@@ -1,0 +1,273 @@
+---
+title: "Homework 1 - Group G"
+author: "Matilde Castelli - Dogan Demirbilek - Eros Fabrici - Elena Peressi"
+#output: html_notebook
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    theme: united
+    highlight: tango
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# DAAG: **Data Analysis and Graphics Using R**
+
+## Exercise 4.
+
+For the data frame ais (DAAG package)
+- Use the function `str()` to get information on each of the columns. Determine  whether any of the columns hold missing values.
+
+```{r}
+library(DAAG)
+for (col in names(ais))
+{
+  str(ais[col])
+}
+#second method
+str(ais)
+
+#first option
+#subset(ais,is.na(ais)) #select for columns
+
+#second option
+if(any(is.na(ais)))
+{
+  print("Some columns have Na Values")
+}else
+{ 
+  print("No missing values")
+}
+
+```
+
+
+- Make a table that shows the numbers of males and females for each different sport. In which sports is there a large imbalance (e.g., by a factor of more than 2:1) in the numbers of the two sexes?
+  
+```{r}
+#?ais
+# table of males anf females for each sport
+t<-table(Sex=ais$sex, Sport=ais$sport)
+t
+#apply the function to all the columns of the table
+title <- apply(t,2, max) > 2*apply(t,2, min)
+
+#Sports with large imbalance
+colnames(t)[title]
+
+```
+
+## Exercise 6.
+
+Create a data frame called *Manitoba.lakes* that contains the lake’s elevation (in meters above sea level) and area (in square kilometers) as listed below. Assign the names of the lakes using the row.names() function.
+
+```
+				elevation 	area
+Winnipeg 			217 	24387
+Winnipegosis 		254 	5374
+Manitoba 			248 	4624
+SouthernIndian 		254 	2247
+Cedar 				253 	1353
+Island 				227 	1223
+Gods 				178 	1151
+Cross 				207 	755
+Playgreen 			217 	657
+```
+
+## Exercise 11.
+
+Run the following code:
+
+```R
+gender <- factor(c(rep("female", 91), rep("male", 92)))
+table(gender)
+gender <- factor(gender, levels=c("male", "female"))
+table(gender)
+gender <- factor(gender, levels=c("Male", "female")) 
+# Note the mistake: "Male" should be "male"
+table(gender)
+table(gender, exclude=NULL)
+rm(gender) # Remove gender
+```
+
+Explain the output from the successive uses of `table()`.
+
+## Exercise 12.
+
+Write a function that calculates the proportion of values in a vector x that exceed some value
+cutoff.
+
+1. Use the sequence of numbers 1, 2, . . . , 100 to check that this function gives the result that
+   is expected.
+2. Obtain the vector “ex01.36” from the Devore6 (or Devore7) package. These data give the times required for individuals to escape from an oil platform during a drill. Use dotplot() to show the distribution of times. Calculate the proportion of escape times that exceed 7 minutes.
+
+## Exercise 13.
+
+The following plots four different transformations of the Animals data from the MASS package.
+What different aspects of the data do these different graphs emphasize? Consider the effect on low values of the variables, as contrasted with the effect on high values.
+
+```{r}
+par(mfrow=c(2,2)) # 2 by 2 layout on the page
+library(MASS) # Animals is in the MASS package
+#?Animals
+#body weight in kg, brain weight in g.
+plot(brain ~  body, data=Animals)
+plot(sqrt(brain) ~  sqrt(body), data=Animals)
+plot(I(brain^0.1) ~  I(body^0.1), data=Animals)
+# I() forces its argument to be treated "as is", ^ is treated as an arithmetic operator
+plot(log(brain) ~ log(body), data=Animals)
+par(mfrow=c(1,1)) # Restore to 1 figure per page
+```
+
+```{r}
+
+```
+
+
+## Exercise 15.
+
+The data frame `socsupport` (DAAG) has data from a survey on social and other kinds of support, for a group of university students. It includes `Beck Depression Inventory` (BDI) scores.
+
+The following are two alternative plots of BDI against age:
+
+```R
+plot(BDI ˜ age, data=socsupport)
+plot(BDI ˜ unclass(age), data=socsupport)
+```
+
+- For examination of cases where the score seems very high, which plot is more useful? Explain.
+- Why is it necessary to be cautious in making anything of the plots for students in the three oldest age categories (25-30, 31-40, 40+)?
+
+## Exercise 17.
+
+Given a vector x, the following demonstrates alternative ways to create a vector of numbers from 1 through n, where n is the length of the vector:
+
+```
+x <- c(8, 54, 534, 1630, 6611)
+seq(1, length(x))
+seq(along=x)
+```
+
+
+Now set `x <- NULL` and repeat each of the calculations `seq(1, length(x))` and `seq(along=x).` 
+
+Which version of the calculation should be used in order to return a vector of length 0 in the event that the supplied argument is `NULL.`
+
+#### Exercise 20
+
+The help page for iris (type help(iris)) gives code that converts the data in
+iris3 (datasets package) to case-by-variable format, with column names “Sepal.Length”,“Sepal.Width”, “Petal.Length”, “Petal.Width”, and “Species”. Look up the help pages for the functions that are used, and make sure that you understand them. Then add annotation to this code that explains each step in the computation.
+
+-----
+
+# CS: **Core Statistics**
+
+## Exercise 1.1
+
+Exponential random variable, X ≥ 0, has p.d.f. f(x) = λ exp(−λ^x).
+
+1. Find the c.d.f. and the quantile function for X.
+2. Find Pr(X < λ) and the median of X.
+3. Find the mean and variance of X.
+
+## Exercise 1.2
+
+Evaluate Pr(X < 0.5, Y < 0.5) if X and Y have joint p.d.f. (1.2).
+
+## Exercise 1.6
+
+Let X and Y be non-independent random variables, such that $var(X) = σ^2x$, $var(Y ) = σ^2_y$ and $cov(X, Y ) = σ^2_{xy}$. Using the result from Section 1.2, find var(X + Y ) and var(X − Y ).
+
+## Exercise 1.8
+
+If $log(X) ∼ N(μ, σ^2)$, find the p.d.f. of X.
+
+## Exercise 1.9
+
+Discrete random variable Y has a Poisson distribution with parameter λ if its p.d.f. is $f(y) = λ^ye^{−\lambda}/y!$, for $y = 0, 1,$ . . .
+
+1. Find the moment generating function for Y (hint: the power series representation of the exponential function is useful).
+2. If Y1 ∼ Poi(λ1) and independently Y2 ∼ Poi(λ2), deduce the distribution of Y1 + Y2, by employing a general property of m.g.f.s.
+3. Making use of the previous result and the central limit theorem, deduce the normal approximation to the Poisson distribution.
+4. Confirm the previous result graphically, using R functions dpois, dnorm, plot or barplot and lines. Confirm that the approximation improves with increasing λ
+
+# LAB: **Laboratory**
+
+## Exercise 1
+Write a function binomial(x,n,p) for the binomial distribution above, depending on parameters x,n,p, and test it with some prespecified values. Use the function choose() for the binomial coefficient.
+Plot two binomials with n=20, and p=0.3,0.6 respectively.
+
+
+The r.v. $X$ that counts the number of successes has **binomial distribution** with probability
+function
+$$
+{\rm Pr}(X = x) = \binom{n}{x} p^x \, (1-p)^{n-x} \, , \hspace{1cm} x = 0,\ldots,n\, .
+$$
+
+```{r}
+mybinom <- function(x,n,p){
+  y <- (choose(n,x)*(p^{x})*((1-p)^{n-x}))
+return(y)
+}
+#test
+print("n = 20, p=0.3")
+mybinom(0:20,20,0.2)
+print("p=0.3")
+mybinom(0:20,20,0.3)
+print("p=0.6")
+mybinom(0:20,20,0.6)
+
+```
+
+```{r}
+# plot
+par(mfrow=c(1,2),mar=c(4,4,2,1),oma=c(0,0.2,0.2,0), pty="s", pch = 16)
+plot(0:20, mybinom(0:20, 20, 0.3), 
+     xlab = "x", ylab = "f(x)", cex.lab=1.5, main="n=20, p = 0.3", cex.main=1.5, col = 'blue')
+plot(0:20, mybinom(0:20, 20, 0.6), 
+     xlab = "x", ylab = "f(x)", cex.lab=1.5, main="n=20, p = 0.6", cex.main=1.5, col = 'blue')
+```
+
+ 
+## Exercise 2
+- Generate in $\mathsf{R}$ the same output, but using $\mathsf{rgeom()}$ for generating the random variables. *Hint*: generate $n$ times three geometric distribution $X_1,\ldots, X_3$ with $p=0.08$, store them in a matrix and compute then the sum $Y$. 
+
+```{r}
+
+```
+
+
+## Exercise 3
+- Show in $\mathsf{R}$, also graphically, that $\mbox{Gamma}(n/2, 1/2)$ coincides with a $\chi^{2}_{n}$.
+
+- Find the 5\% and the 95\% quantiles of a $\mbox{Gamma}(3,3)$. 
+
+
+
+## Exercise 4
+
+- Generate $n=1000$ values from a $\mbox{Beta}(5,2)$ and compute the sample mean and the sample variance.
+
+
+## Exercise 5
+- Analogously, show with a simple $\mathsf{R}$ function that a negative binomial distribution may be seen as a mixture between a Poisson and a Gamma. In symbols: $X|Y \sim \mathcal{P}(Y)$, $Y \sim \mbox{Gamma}(\alpha, \beta)$, then $X \sim \ldots$.
+
+## Exercise 6
+
+- Instead of using the built-in function $\mathsf{ecdf()}$, write your own $\mathsf{R}$ function for the empirical cumulative distribution function and reproduce the two plots above.
+
+
+## Exercise 7
+
+Compare in $\mathsf{R}$ the assumption of normality for these samples:
+
+- $y_1, \ldots, y_{100} \sim t_{\nu},$ with $\nu=5,20, 100$. What does it happens when the number of degrees of freedom $\nu$ increases?
+
+- $y_1, \ldots, y_{100} \sim \mbox{Cauchy}(0,1)$. Do you note something weird for the extremes quantiles? 
+
+
+## Exercise 8
+
+- Write a general $\mathsf{R}$ function for checking the validity of the central limit theorem. *Hint* The function will consist of two parameters: clt_function <- function($\mathsf{n}$, $\mathsf{distr}$), where the first one is the sampe size and the second one is the kind of distribution from which you generate. Use plots for visualizing the results.
