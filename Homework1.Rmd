@@ -74,7 +74,58 @@ Island 				227 	1223
 Gods 				178 	1151
 Cross 				207 	755
 Playgreen 			217 	657
+
 ```
+```{r}
+Manitoba.lakes <- data.frame(
+    elevation = c(217, 254, 248, 254, 253, 227, 178, 207, 217),
+    area = c(24387, 5374, 4624, 2247, 1353, 1223, 1151, 755, 657)
+)
+
+rows = c("Winnipeg", "Winnipegosis", "Manitoba", "SouthernIndian", "Cedar", "Island", "Gods", "Cross", "Playgreen")
+
+row.names(Manitoba.lakes) <- rows
+
+print(Manitoba.lakes)
+
+```
+
+(a) Use the following code to plot log2(area) versus elevation, adding labeling infor-
+mation (there is an extreme value of area that makes a logarithmic scale pretty much
+essential):
+
+```
+attach(Manitoba.lakes)
+plot(log2(area)  ̃ elevation, pch=16, xlim=c(170,280))
+# NB: Doubling the area increases log2(area) by 1.0
+text(log2(area)  ̃ elevation,
+labels=row.names(Manitoba.lakes), pos=4)
+text(log2(area)  ̃ elevation, labels=area, pos=2)
+title("Manitoba’s Largest Lakes")
+detach(Manitoba.lakes)
+```
+
+Devise captions that explain the labeling on the points and on the y-axis. It will be necessary
+to explain how distances on the scale relate to changes in area.
+
+(b) Repeat the plot and associated labeling, now plotting area versus elevation, but
+specifying log="y" in order to obtain a logarithmic y-scale. [Note: The log="y"
+setting carries across to the subsequent text() commands. See Subsection 2.1.5 for an
+example.]
+
+```{r}
+attach(Manitoba.lakes) 
+plot(area ~ elevation, pch=16, xlim = c(170,260), log = "y")
+text(log(area) ~ elevation,
+     labels=row.names(Manitoba.lakes), pos=4)
+text(log(area) ~ elevation, labels=area, pos=2)
+title("Manitoba’s Largest Lakes")
+detach(Manitoba.lakes)
+
+```
+
+
+
 
 ## Exercise 11.
 
@@ -138,7 +189,14 @@ plot(BDI ˜ unclass(age), data=socsupport)
 ```
 
 - For examination of cases where the score seems very high, which plot is more useful? Explain.
+
+Individual value plot is more useful to examination of cases. Both plots are useful to assess central tendency, variability and identify outliers. However box-plots present ranges of values based on quartiles and when sample size is too small, the quartile estimates might not be meaningful. Therefore it is more logical to use individual value plot to examine cases.
+
 - Why is it necessary to be cautious in making anything of the plots for students in the three oldest age categories (25-30, 31-40, 40+)?
+
+Three oldest age categories (25-30, 31-40, 40+) are also has the least number of observations and plots such as boxplots may estimate the properties of those age categories while plottoing them. Those estimations will not be meaningfull when sample size is too small. Therefore it is necessary to be cautious about those age categories.
+
+
 
 ## Exercise 17.
 
@@ -169,8 +227,60 @@ iris3 (datasets package) to case-by-variable format, with column names “Sepal.
 Exponential random variable, X ≥ 0, has p.d.f. f(x) = λ exp(−λ^x).
 
 1. Find the c.d.f. and the quantile function for X.
+
+To find c.d.f of $f(x)$, we need to integrate it from $0$ to $x$.
+
+$$
+f(x) = \lambda e^{-\lambda x} \\
+F(x) = P(X <= x) \\
+     = \int_{0}^{x} f(w) \; dw \\
+     = \int_{0}^{x} \lambda e^{-\lambda w} \; dw \\
+     = [-\lambda e^{-\lambda w}]_{0}^{x} \\
+     = 1 - e^{-\lambda x} \\
+$$
+
+The quantile function (inverse c.d.f)
+
+$$
+     1 - e^{-\lambda Q} = p \\
+     Q(p; \lambda) = \frac{\ln(1-p)}{\lambda}
+$$
+
 2. Find Pr(X < λ) and the median of X.
+
+By using c.d.f function that we found before
+$Pr(X < λ) = 1 - e^{-\lambda^2}$
+
+Median is
+$$
+Q(p = \frac{2}{4}; \lambda)\\
+=-\ln(1/2)\lambda
+$$
+
 3. Find the mean and variance of X.
+Mean
+$$
+E[X] = \int_{0}^{+\infty} xf(x) \; dx \\
+     = \int_{0}^{+\infty} x\lambda e^{-\lambda x} \; dx  \\
+     = \left[-x e^{-\lambda x}\right]_{0}^{\infty} + \int_{0}^{\infty}e^{-\lambda x}dx   \\
+     = (0-0) + \left[\frac{-1}{\lambda}-e^{-\lambda x} \right]_{0}^{\infty} \\
+     = 0 + \left(0 + \frac{1}{\lambda}\right)
+     = \frac{1}{\lambda}
+$$
+Variance
+$$
+E[X^2] = \int_{-\infty}^{+\infty} x^2f(x) \; dx \\
+= \int_{0}^{+\infty} x^2\lambda e^{-\lambda x} \; dx \\
+= \left[-x^2e^{-\lambda x}\right]_{0}^{\infty} + \int_{0}^{\infty}2xe^{-\lambda x}dx \\
+= (0-0) + \left[\frac{-2}{\lambda}  x e^{-\lambda x}\right]_{0}^{\infty} + \frac{2}{\lambda} \int_{0}^{\infty}e^{-\lambda x}dx\\
+= (0-0) +\frac{2}{\lambda} \left[\frac{-1}{\lambda}e^{-\lambda x}  \right]_{0}^{\infty}
+= \frac{2}{\lambda^2}\\
+Var[X] = E[X^2] - E[X]^2\\
+We \space already \space know \space E[X] = \frac{1}{\lambda}\\
+Var[X] = \frac{2}{\lambda^2} - \frac{1}{\lambda^2} = \frac{1}{\lambda^2}
+$$
+
+
 
 ## Exercise 1.2
 
