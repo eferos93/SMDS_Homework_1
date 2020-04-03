@@ -160,6 +160,19 @@ cutoff.
 1. Use the sequence of numbers 1, 2, . . . , 100 to check that this function gives the result that
    is expected.
 2. Obtain the vector “ex01.36” from the Devore6 (or Devore7) package. These data give the times required for individuals to escape from an oil platform during a drill. Use dotplot() to show the distribution of times. Calculate the proportion of escape times that exceed 7 minutes.
+```{r}
+
+library(purrr) #lib for functional programming tools
+#' Return the ration of elements in x that that exceed a cutoff value
+#' @param x A vector/list of numerical elements
+proportion_exceed <- function(x, cutoff){
+  n <- x %>% length
+  n_exceeding <- x %>% keep(function(el) el > cutoff) %>% length
+  return(n_exceeding/n)
+}
+proportion_exceed(1:100, 110)
+
+```
 
 ## Exercise 13.
 
