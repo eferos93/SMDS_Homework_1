@@ -129,7 +129,7 @@ detach(Manitoba.lakes)
 
 Run the following code:
 
-```R
+```{r}
 gender <- factor(c(rep("female", 91), rep("male", 92)))
 table(gender)
 gender <- factor(gender, levels=c("male", "female"))
@@ -138,10 +138,17 @@ gender <- factor(gender, levels=c("Male", "female"))
 # Note the mistake: "Male" should be "male"
 table(gender)
 table(gender, exclude=NULL)
-rm(gender) # Remove gender
+#rm(gender) # Remove gender
 ```
 
 Explain the output from the successive uses of `table()`.
+The first output shows a table with the counts of each factor level present in `gender`, which is a variable generated from the function `factor` which in turn encodes a vector as a factor. In our case, the vector is created with the merge of the vectors of characters `rep("female", 91)` and `rep("male", 92)` (`rep(a,b)` is a function that simply generates a vector by replicating `a`, `b` times) by using the function `c()` that takes an  aribitrary element of arguments and concatenates them into a single vector.
+
+The second shows the same output, where `gender` is reassigned by using `factor` function, but in a different way. The variable `gender` itself is passed as an argument together with another vector, `c("male", "female")`, which indicates the levels of the new factor. In this case `factor` function will take the first argument, i.e. `gender`, and tranform each element in it that correspondes to one of the elements in the second argument, i.e. `"female"` and `"male"`, into a factor level with the same label (e.g. `"female"` is converted in factor level `female`), to `<NA>` (not available) otherwise.
+
+In the third case, we are doing the same thing as steps as in the previous, but in the argument `levels` passed to `factors` there is a mistake: `c("Male", "female")` instead of `c("male", "female")`. Therefore, all the elements equal to `male` will be set as `<NA>` in the new factor. Consequently, `table(gender)` will count 0 for factor level `Male`.
+
+Finally, `table(gender, exclude=NULL)` will show also the count of elements in `gender` that are marked as `<NA>`. The count was not shown in the third case due to the fact that `table`, by default, excludes all the elements that are `<NA>` or `<NaN>` (not a number). 
 
 ## Exercise 12.
 
