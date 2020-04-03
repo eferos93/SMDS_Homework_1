@@ -163,14 +163,33 @@ cutoff.
 ```{r}
 
 library(purrr) #lib for functional programming tools
+library(Devore7)
 #' Return the ration of elements in x that that exceed a cutoff value
-#' @param x A vector/list of numerical elements
-proportion_exceed <- function(x, cutoff){
+#' @param x A vector/list of numeric values
+#' @param cutoff A number 
+#' @return Ratio of elements in x that exceed cutoff value
+#' @examples
+#' proportion_exceed(1:50, 25) -> 0.5
+proportion_exceeding <- function(x, cutoff){
+  if(!is.numeric(x) || !is.numeric(cutoff)){
+    stop("Both arguments have to be numeric!")
+  }
+  
   n <- x %>% length
   n_exceeding <- x %>% keep(function(el) el > cutoff) %>% length
   return(n_exceeding/n)
 }
-proportion_exceed(1:100, 110)
+proportion_exceeding(1:100, 99)
+
+
+data(ex01.36)
+dotplot(C1 ~ 1:length(C1), data = ex01.36, ylim=0:450,
+        horizontal = FALSE, xlab="Individuals", ylab="Time (seconds)")
+
+#proportion of the excape times that exceeds 7 minutes
+proportion_exceeding(ex01.36$C1, 7*60) # ~3,85%
+
+
 
 ```
 
@@ -232,6 +251,15 @@ seq(along=x)
 Now set `x <- NULL` and repeat each of the calculations `seq(1, length(x))` and `seq(along=x).` 
 
 Which version of the calculation should be used in order to return a vector of length 0 in the event that the supplied argument is `NULL.`
+
+The second, because `seq(1, length(x))` is interpreted as `seq(from = 1, to = 0)` therefore producing the vector `[1,0]`, while `seq(along=x)` should generate a sequence `1, 2, ..., lenght(x)` but as `length(x)` is equal to 0, it will return a vector of lenght 0.
+
+```{r}
+x <- NULL
+seq(1, length(x))
+seq(along=x)
+```
+
 
 #### Exercise 20
 
