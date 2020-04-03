@@ -138,7 +138,7 @@ gender <- factor(gender, levels=c("Male", "female"))
 # Note the mistake: "Male" should be "male"
 table(gender)
 table(gender, exclude=NULL)
-#rm(gender) # Remove gender
+rm(gender) # Remove gender
 ```
 
 Explain the output from the successive uses of `table()`.
@@ -209,10 +209,6 @@ plot(log(brain) ~ log(body), data=Animals)
 par(mfrow=c(1,1)) # Restore to 1 figure per page
 ```
 
-```{r}
-
-```
-
 
 ## Exercise 15.
 
@@ -278,7 +274,7 @@ To find c.d.f of $f(x)$, we need to integrate it from $0$ to $x$.
 
 $$
 f(x) = \lambda e^{-\lambda x} \\
-F(x) = P(X <= x) \\
+F(x) = P(X \leq x) \\
      = \int_{0}^{x} f(w) \; dw \\
      = \int_{0}^{x} \lambda e^{-\lambda w} \; dw \\
      = [-\lambda e^{-\lambda w}]_{0}^{x} \\
@@ -332,9 +328,23 @@ $$
 
 Evaluate Pr(X < 0.5, Y < 0.5) if X and Y have joint p.d.f. (1.2).
 
+$$
+Pr(X<0.5, Y<0.5) = F_{X,Y}(0.5, 0.5)\\
+= \int_{-\infty}^{0.5}\int_{-\infty}^{0.5}f_{X,Y}(x,y)\;dydx
+$$
+
 ## Exercise 1.6
 
-Let X and Y be non-independent random variables, such that $var(X) = σ^2x$, $var(Y ) = σ^2_y$ and $cov(X, Y ) = σ^2_{xy}$. Using the result from Section 1.2, find var(X + Y ) and var(X − Y ).
+Let X and Y be non-independent random variables, such that $var(X) = σ^2_x$, $var(Y ) = σ^2_y$ and $cov(X, Y ) = σ^2_{xy}$. Using the result from Section 1.6.2, find var(X + Y) and var(X − Y).
+
+As $X$ $Y$ are dependent, we have that
+$$
+Var(X+Y) = Var(X) + Var(Y) + 2Cov(X,Y)\\
+= \sigma^2_x + \sigma^2_y + 2\sigma^2_{xy}\\
+
+Var(X-Y) = Var(X) + Var(Y) - 2Cov(X,Y)\\
+= \sigma^2_x + \sigma^2_y - 2\sigma^2_{xy}
+$$
 
 ## Exercise 1.8
 
@@ -364,8 +374,7 @@ $$
 
 ```{r}
 mybinom <- function(x,n,p){
-  y <- (choose(n,x)*(p^{x})*((1-p)^{n-x}))
-return(y)
+  return( choose( n,x )*( p^{x} )*( (1-p)^{n-x} ) )
 }
 #test
 print("n = 20, p=0.3")
@@ -412,8 +421,23 @@ hist(matrix_mini[,4])
 ## Exercise 3
 - Show in $\mathsf{R}$, also graphically, that $\mbox{Gamma}(n/2, 1/2)$ coincides with a $\chi^{2}_{n}$.
 
+$$
+Gamma(x;\frac{n}{2}, \frac{1}{2}) = \frac{\bigg( \frac{1}{2} \bigg)^{\frac{1}{2}}}{\Gamma(\frac{n}{2})}x^{\frac{n}{2}-1}e^{-\frac{x}{2}}\\
+= \frac{1}{2^{\frac{n}{2}}\Gamma(\frac{n}{2})} x^{\frac{n}{2}-1}e^{-\frac{n}{2}} = \chi^2_n(x)
+$$
+
+```{r}
+d_of_freedom <- 1000; alpha <- d_of_freedom/2; beta <- 1/2;
+curve(dchisq(x, d_of_freedom), col="red", xlim=c(800, 1200), lwd = 3, ylab = "Density")
+curve(dgamma(x, alpha, beta), col="blue", xlim=c(800, 1200), lwd = 1, add = TRUE)
+```
+
 - Find the 5\% and the 95\% quantiles of a $\mbox{Gamma}(3,3)$. 
 
+```{r}
+qgamma(0.05, 3, 3)
+qgamma(0.95, 3, 3)
+```
 
 
 ## Exercise 4
