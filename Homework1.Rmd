@@ -221,9 +221,38 @@ Which version of the calculation should be used in order to return a vector of l
 
 ## Exercise 20
 
-The help page for iris (type help(iris)) gives code that converts the data in
-iris3 (datasets package) to case-by-variable format, with column names “Sepal.Length”,“Sepal.Width”, “Petal.Length”, “Petal.Width”, and “Species”. Look up the help pages for the functions that are used, and make sure that you understand them. Then add annotation to this code that explains each step in the computation.
+**The help page for iris (type help(iris)) gives code that converts the data in iris3 (datasets package) to case-by-variable format, with column names “Sepal.Length”,“Sepal.Width”, “Petal.Length”, “Petal.Width”, and “Species”. Look up the help pages for the functions that are used, and make sure that you understand them. Then add annotation to this code that explains each step in the computation.**
 
+```{r}
+
+#dimnames_ retrieves names of row and columns of iris3. The output is:
+#  1. NULL
+#  2. Sepal L., Sepal W., Petal L., Petal W.
+#  3. Setosa, Versicolor, Virginica
+  
+dni3 <- dimnames(iris3) 
+
+# Creates a new dataframe
+# the function 'aperm' permutates the dimensions of iris3 passing from [50,4,3] to [50,3,4]
+ii <- data.frame(matrix(aperm(iris3, c(1,3,2)), ncol = 4,
+                        # the names of columns are obtained from the string character dni3[[2]] 
+                        #and 'sub' replaces the first occurence of L. with Length 
+                        #and W. with Width, while the rows have are unnamed 
+                        dimnames = list(NULL, sub(" L.",".Length",
+                                        sub(" W.",".Width", dni3[[2]])))),
+  #'gl',we generate a new factor by specifying, the numbers of levels=3, number of replications=50
+    Species = gl(3, 50, labels = sub("S", "s", sub("V", "v", dni3[[3]]))))
+# Check if the elements of the new dataframe ii are equal to the original iris.
+# The output is TRUE
+all.equal(ii, iris) 
+                  
+
+
+
+
+```
+
+  
 -----
 
 # CS: **Core Statistics**
@@ -493,12 +522,12 @@ nb_mixture <- function(df,n){
 df<-5
 n<-10000
 
-# Plot of the mixture distribution - PoissonGamma - in black:
+# Plot of the mixture distribution - PoissonGamma - in green:
 pois_Gamma <- nb_mixture(df,n)
 plot( density(pois_Gamma), col="green", lwd=1, type="h",
 main="Negative Binomial distribution and Poisson-Gamma mixture",cex.main=1.0)
 
-# Negative Binomial distribution superposition - in red:
+# Negative Binomial distribution superposition - in black, the probability is (alpha+1/alpha):
 Nbinom <- c(rnbinom(n, size=df, prob=df/(df+1)))
 lines( density(Nbinom), col="black", lwd=2 )
 legend("topright", legend=c("Pois-Gamma Mixture", "Negative Binomial"), fill=c("green", "black"))
