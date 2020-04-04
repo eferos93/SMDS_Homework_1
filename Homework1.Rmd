@@ -1,6 +1,6 @@
 ---
 title: "Homework 1 - Group G"
-author: "Matilde Castelli - Dogan Demirbilek - Eros Fabrici - Elena Peressi"
+author: "Matilde Castelli - Dogan Demirbilek - Eros Fabrici"
 #output: html_notebook
 output:
   html_document:
@@ -177,9 +177,10 @@ plot(log(brain) ~ log(body), data=Animals)
 par(mfrow=c(1,1)) # Restore to 1 figure per page
 ```
 
-```{r}
-
-```
+- The top left graph shows the original data,the weight of body in kg and the weight of brain in g. We can observe that the range of values is very wide and only few points are much larger than the rest of the data. This leads to uninformative and unclear representation, since the majority of the data are massed close to the origin and we can not retrieve any information about any possible relationship between the variables.
+- In the top right graph the application of the square root transformation is not sufficient to minimize the effect of outliers, and the representation of data is not yet very clear.
+- In the bottom left graph this transformation highlghts more clearly a sort of correlation between values. 
+- In the bottom right log-log plot the effect of outliers is minimized, reducing wide range of values to a more manageable size. Data are equally spreaded and thus the correlation between the two weights is underlined.
 
 
 ## Exercise 15.
@@ -218,7 +219,7 @@ Now set `x <- NULL` and repeat each of the calculations `seq(1, length(x))` and 
 
 Which version of the calculation should be used in order to return a vector of length 0 in the event that the supplied argument is `NULL.`
 
-#### Exercise 20
+## Exercise 20
 
 The help page for iris (type help(iris)) gives code that converts the data in
 iris3 (datasets package) to case-by-variable format, with column names “Sepal.Length”,“Sepal.Width”, “Petal.Length”, “Petal.Width”, and “Species”. Look up the help pages for the functions that are used, and make sure that you understand them. Then add annotation to this code that explains each step in the computation.
@@ -229,9 +230,9 @@ iris3 (datasets package) to case-by-variable format, with column names “Sepal.
 
 ## Exercise 1.1
 
-Exponential random variable, X ≥ 0, has p.d.f. f(x) = λ exp(−λ^x).
+**Exponential random variable, X ≥ 0, has p.d.f. f(x) = λ exp(−λ^x).**
 
-1. Find the c.d.f. and the quantile function for X.
+**1. Find the c.d.f. and the quantile function for X.**
 
 To find c.d.f of $f(x)$, we need to integrate it from $0$ to $x$.
 
@@ -251,7 +252,7 @@ $$
      Q(p; \lambda) = \frac{\ln(1-p)}{\lambda}
 $$
 
-2. Find Pr(X < λ) and the median of X.
+**2. Find Pr(X < λ) and the median of X.**
 
 By using c.d.f function that we found before
 $Pr(X < λ) = 1 - e^{-\lambda^2}$
@@ -262,7 +263,7 @@ Q(p = \frac{2}{4}; \lambda)\\
 =-\ln(1/2)\lambda
 $$
 
-3. Find the mean and variance of X.
+**3. Find the mean and variance of X.**
 Mean
 $$
 E[X] = \int_{0}^{+\infty} xf(x) \; dx \\
@@ -289,7 +290,29 @@ $$
 
 ## Exercise 1.2
 
-Evaluate Pr(X < 0.5, Y < 0.5) if X and Y have joint p.d.f. (1.2).
+**Evaluate Pr(X < 0.5, Y < 0.5) if X and Y have joint p.d.f. (1.2).**
+
+
+The given joint p.d.f. of $X,Y$ is:
+
+$$f(x,y) = \begin{cases}x+\frac{3}{2}y^2 & \mbox{if }0<x<1 \mbox{ and } 0<y<1\\0 & \mbox{otherwise} \end{cases}$$
+The joint pdf is the function $f(x,y)$ such that, if $\Omega$ is any region in the $x-y$ plane,
+$$Pr\{(X,Y)\in \Omega\} = \int\int_{\Omega} f(x,y)\, dx \, dy$$ 
+with $f(x,y) \geq 0$ and $\int_{-\infty}^{\infty}\int_{-\infty}^{\infty}f(x,y)\, dx\, dy = 1$.
+
+We want evaluate the probability from the joint p.d.f, in the region $\Omega = \{(x,y)|0\le x \le 0.5, 0\le y \le0.5\}$. 
+We have that:
+
+$$
+\begin{aligned}
+Pr(X < 0.5, Y < 0.5) &= \int_{0}^{0.5}\int_{0}^{0.5} f(x,y) \,dx\,dy \\[5pt]
+&= \int_{0}^{0.5}\int_{0}^{0.5} x+\frac{3}{2}y^2 \,dx\,dy \\[5pt]
+&= \int_{0}^{0.5}[\frac{1}{2}x^2+\frac{3}{2}y^2x]_{x=0}^{x=0.5}\,dy \\[5pt]
+&= \int_{0}^{0.5}\frac{1}{8}+\frac{3}{4}y^2\,dy \\[5pt]
+&= [\frac{1}{8}y+\frac{1}{4}y^3]_{y=0}^{y=0.5} \\[5pt]
+&= \frac{1}{16} + \frac{1}{32} = \frac{3}{32} = 0.09357
+\end{aligned}
+$$
 
 ## Exercise 1.6
 
@@ -313,18 +336,50 @@ $$
 
 ## Exercise 1.9
 
-Discrete random variable Y has a Poisson distribution with parameter λ if its p.d.f. is $f(y) = λ^ye^{−\lambda}/y!$, for $y = 0, 1,$ . . .
+**Discrete random variable Y has a Poisson distribution with parameter λ if its p.d.f. is $f(y) = λ^ye^{−\lambda}/y!$, for $y = 0, 1,$ . . .**
 
-1. Find the moment generating function for Y (hint: the power series representation of the exponential function is useful).
-2. If Y1 ∼ Poi(λ1) and independently Y2 ∼ Poi(λ2), deduce the distribution of Y1 + Y2, by employing a general property of m.g.f.s.
-3. Making use of the previous result and the central limit theorem, deduce the normal approximation to the Poisson distribution.
-4. Confirm the previous result graphically, using R functions dpois, dnorm, plot or barplot and lines. Confirm that the approximation improves with increasing λ
+**1. Find the moment generating function for Y (hint: the power series representation of the exponential function is useful).**
+
+Since the Poisson distribution is discrete and the moment generating function is defined as $M_X(s) = E(e^{sX})$, with $s$ real, we have that:
+
+$$
+\begin{aligned}
+M_Y(s) = E(e^{sY}) &= \sum^\infty_{x=0}e^{sy} \frac{\lambda^y e^{−\lambda}}{y!} \\
+&= e^{-\lambda} \sum^\infty_{x=0}\frac{(\lambda e^s)^y}{y!}
+\end{aligned}
+$$
+Given the power series representation of the exponential function $\sum^\infty_{k=0}\frac{x^k}{k!} = e^x$, we can express $M_Y(s)$ as:
+
+$$M_Y(s) = e^{-\lambda}e^{\lambda e^s} = e^{\lambda(e^s - 1)}$$
+
+**2. If $Y_1∼Poi(λ_1)$ and independently $Y_2 ∼ Poi(λ_2)$, deduce the distribution of $Y_1 + Y_2$, by employing a general property of m.g.f.s.**
+
+Given that $Y_1$ and $Y_2$ are independent random variables, we can exploit the property: $M_{X + Y}(s) = M_{X}(s)M_{Y}(s)$  
+
+So we have:
+$$M_{Y_1 + Y_2}(s) = M_{Y_1}(s)M_{Y_2}(s) = e^{\lambda_1(e^s - 1)}e^{\lambda_2(e^s - 1)} = e^{ \lambda_1(e^s - 1)+\lambda_2(e^s - 1)} = e^{(\lambda_1 + \lambda_2)(e^s - 1)}$$
+From this moment generating function we can deduce that $Y_1 + Y_2 \sim \mbox{Pois}(\lambda_1 + \lambda_2)$
+
+**3. Making use of the previous result and the central limit theorem, deduce the normal approximation to the Poisson distribution.**
+
+Consider independent Poisson variables $X_1,X_2,...,X_n$, $X_i \sim Pois(\lambda_i) \text{ for } i=1,...,n$. In the previous point we show that the sum of independent Poisson r.v. is a Poisson random variable $Y= \sum_{i=1}^nX_i \sim Pois(\lambda)$ , where $\lambda = \sum_{i=1}^{n} \lambda_i$
+ 
+
+$$Y \sim N(\mu = \lambda, \sigma^2 = \lambda)$$
+Thus, if $\lambda$ is large the distribution $\mbox{Pois}(\lambda)$ gets approximated well by the distribution $N(\lambda, \lambda)$
+
+**4. Confirm the previous result graphically, using R functions dpois, dnorm, plot or barplot and lines. Confirm that the approximation improves with increasing λ**
+
+```{r}
+
+```
+
 
 # LAB: **Laboratory**
 
 ## Exercise 1
-Write a function binomial(x,n,p) for the binomial distribution above, depending on parameters x,n,p, and test it with some prespecified values. Use the function choose() for the binomial coefficient.
-Plot two binomials with n=20, and p=0.3,0.6 respectively.
+**Write a function binomial(x,n,p) for the binomial distribution above, depending on parameters x,n,p, and test it with some prespecified values. Use the function choose() for the binomial coefficient.**
+**Plot two binomials with n=20, and p=0.3,0.6 respectively.**
 
 
 The r.v. $X$ that counts the number of successes has **binomial distribution** with probability
@@ -338,13 +393,9 @@ mybinom <- function(x,n,p){
   y <- (choose(n,x)*(p^{x})*((1-p)^{n-x}))
 return(y)
 }
-#test
-print("n = 20, p=0.3")
-mybinom(0:20,20,0.2)
-print("p=0.3")
-mybinom(0:20,20,0.3)
-print("p=0.6")
-mybinom(0:20,20,0.6)
+ # Test with some prespecified values.
+all.equal(mybinom(2,20,0.2), dbinom(2,20,0.2))
+all.equal(mybinom(4,5,0.2), dbinom(4,5,0.2))
 
 ```
 
@@ -394,6 +445,41 @@ hist(matrix_mini[,4])
 
 ## Exercise 5
 - Analogously, show with a simple $\mathsf{R}$ function that a negative binomial distribution may be seen as a mixture between a Poisson and a Gamma. In symbols: $X|Y \sim \mathcal{P}(Y)$, $Y \sim \mbox{Gamma}(\alpha, \beta)$, then $X \sim \ldots$.
+
+```{r}
+nb_mixture <- function(df,n){
+  lambda = rgamma(n,df,df)
+  X = rpois(n,lambda)
+  return(X)
+}
+
+df<-5
+n<-10000
+
+
+
+# Plot of the mixture distribution - PoissonGamma - in black:
+#PoissonGamma <- nb_mixture(df,n)
+#plot( density(PoissonGamma), col="black", lwd=1, type="h",
+#main="Negative Binomial distribution as a Poisson-Gamma mixture")
+#plot(0:10000, dnbinom(0:10000, df, prob=p), xlab="Y=number of failures before k successes",
+#ylab="f(x)",pch=21, bg=1)
+
+# Negative Binomial distribution superposition - in red:
+#Nbinom <- c(rnbinom(n, size=df, prob=df/(df+1)))
+#lines( density(Nbinom), col="red", lwd=2 )
+#egend("topright", legend=c("Poisson-Gamma Mixture", "Negative Binomial"), fill=c("black", "red"))
+# Comparison between the mean and variance:
+# Mean PoissonGamma:
+#mean(PoissonGamma)
+# Mean Negative Binomial:
+#mean(Nbinom)
+# Variance PoissonGamma:
+#var(PoissonGamma)
+# Variance Negative Binomial:
+#var(Nbinom)
+```
+
 
 ## Exercise 6
 
