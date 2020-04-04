@@ -206,14 +206,11 @@ plot(log(brain) ~ log(body), data=Animals)
 par(mfrow=c(1,1)) # Restore to 1 figure per page
 ```
 
-<<<<<<< HEAD
-=======
 - The top left graph shows the original data,the weight of body in kg and the weight of brain in g. We can observe that the range of values is very wide and only few points are much larger than the rest of the data. This leads to uninformative and unclear representation, since the majority of the data are massed close to the origin and we can not retrieve any information about any possible relationship between the variables.
 - In the top right graph the application of the square root transformation is not sufficient to minimize the effect of outliers, and the representation of data is not yet very clear.
 - In the bottom left graph this transformation highlghts more clearly a sort of correlation between values. 
 - In the bottom right log-log plot the effect of outliers is minimized, reducing wide range of values to a more manageable size. Data are equally spreaded and thus the correlation between the two weights is underlined.
 
->>>>>>> d5830947d2dde70c79f711802b53bd4dd79bc3b5
 
 ## Exercise 15.
 
@@ -251,7 +248,6 @@ Now set `x <- NULL` and repeat each of the calculations `seq(1, length(x))` and 
 
 Which version of the calculation should be used in order to return a vector of length 0 in the event that the supplied argument is `NULL.`
 
-<<<<<<< HEAD
 The second, because `seq(1, length(x))` is interpreted as `seq(from = 1, to = 0)` therefore producing the vector `[1,0]`, while `seq(along=x)` should generate a sequence `1, 2, ..., lenght(x)` but as `length(x)` is equal to 0, it will return a vector of lenght 0.
 
 ```{r}
@@ -262,9 +258,6 @@ seq(along=x)
 
 
 #### Exercise 20
-=======
-## Exercise 20
->>>>>>> d5830947d2dde70c79f711802b53bd4dd79bc3b5
 
 The help page for iris (type help(iris)) gives code that converts the data in
 iris3 (datasets package) to case-by-variable format, with column names “Sepal.Length”,“Sepal.Width”, “Petal.Length”, “Petal.Width”, and “Species”. Look up the help pages for the functions that are used, and make sure that you understand them. Then add annotation to this code that explains each step in the computation.
@@ -366,7 +359,6 @@ $$
 
 ## Exercise 1.6
 
-<<<<<<< HEAD
 Let X and Y be non-independent random variables, such that $var(X) = σ^2_x$, $var(Y ) = σ^2_y$ and $cov(X, Y ) = σ^2_{xy}$. Using the result from Section 1.6.2, find var(X + Y) and var(X − Y).
 
 As $X$ $Y$ are dependent, we have that
@@ -377,9 +369,6 @@ Var(X+Y) = Var(X) + Var(Y) + 2Cov(X,Y)\\
 Var(X-Y) = Var(X) + Var(Y) - 2Cov(X,Y)\\
 = \sigma^2_x + \sigma^2_y - 2\sigma^2_{xy}
 $$
-=======
-Let X and Y be non-independent random variables, such that $var(X) = σ^2_x$, $var(Y ) = σ^2_y$ and $cov(X, Y ) = σ^2_{xy}$. Using the result from Section 1.6.2, find var(X + Y ) and var(X − Y ).
->>>>>>> d5830947d2dde70c79f711802b53bd4dd79bc3b5
 
 ## Exercise 1.8
 
