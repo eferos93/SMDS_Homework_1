@@ -299,6 +299,18 @@ Let X and Y be non-independent random variables, such that $var(X) = σ^2x$, $va
 
 If $log(X) ∼ N(μ, σ^2)$, find the p.d.f. of X.
 
+
+$Let\space Y = log(X) \space so \space X = e^Y\\$
+According to change of variable technique in p.d.f
+$f_x(X) = f_y(v^{-1}(x))\times|(v^{-1})'(x)|$ where $v^{-1}(y)$ is inverse  function of $X$ which is $log(x)$
+
+$$
+f_x(x) = \frac{1}{x} \frac{1}{\sqrt{2\pi}\sigma} exp\left({\frac{-(log(x)- \mu)^2}{2\sigma^2}}\right)
+$$
+
+
+
+
 ## Exercise 1.9
 
 Discrete random variable Y has a Poisson distribution with parameter λ if its p.d.f. is $f(y) = λ^ye^{−\lambda}/y!$, for $y = 0, 1,$ . . .
