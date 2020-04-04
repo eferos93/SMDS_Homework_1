@@ -87,17 +87,17 @@ print(Manitoba.lakes)
 
 ```
 
-(a) Use the following code to plot log2(area) versus elevation, adding labeling infor-
-mation (there is an extreme value of area that makes a logarithmic scale pretty much
+(a) Use the following code to plot log2(area) versus elevation, adding labeling information (there is an extreme value of area that makes a logarithmic scale pretty much
 essential):
 
-```
+```{r}
+library(DAAG)
 attach(Manitoba.lakes)
-plot(log2(area)  ̃ elevation, pch=16, xlim=c(170,280))
+plot(log2(area) ~ elevation, pch=16, xlim=c(170,280))
 # NB: Doubling the area increases log2(area) by 1.0
-text(log2(area)  ̃ elevation,
+text(log2(area) ~ elevation,
 labels=row.names(Manitoba.lakes), pos=4)
-text(log2(area)  ̃ elevation, labels=area, pos=2)
+text(log2(area) ~ elevation, labels=area, pos=2)
 title("Manitoba’s Largest Lakes")
 detach(Manitoba.lakes)
 ```
@@ -113,13 +113,13 @@ example.]
 ```{r}
 library(DAAG)
 attach(Manitoba.lakes) 
-plot(area ~ elevation, pch=16, xlim = c(170,260), log = "y")
-text(area ~ elevation,
+plot(y = log(area), x = elevation, pch=16, xlim = c(170,260), log = "y")
+# NB: 10 x area increases log(area) by 1.0
+text(log(area) ~ elevation,
      labels=row.names(Manitoba.lakes), pos=4)
-text(area ~ elevation, labels=area, pos=2)
+text(log(area) ~ elevation, labels=area, pos=2)
 title("Manitoba’s Largest Lakes")
 detach(Manitoba.lakes)
-
 ```
 
 
@@ -442,6 +442,11 @@ hist(matrix_mini[,4])
 
 - Generate $n=1000$ values from a $\mbox{Beta}(5,2)$ and compute the sample mean and the sample variance.
 
+```{r}
+sample <- rbeta(1000,5,2)
+cat("Sample mean:",mean(sample))
+cat("\nSample variance:",var(sample))
+```
 
 ## Exercise 5
 - Analogously, show with a simple $\mathsf{R}$ function that a negative binomial distribution may be seen as a mixture between a Poisson and a Gamma. In symbols: $X|Y \sim \mathcal{P}(Y)$, $Y \sim \mbox{Gamma}(\alpha, \beta)$, then $X \sim \ldots$.
@@ -538,4 +543,27 @@ Compare in $\mathsf{R}$ the assumption of normality for these samples:
 
 ## Exercise 8
 
-- Write a general $\mathsf{R}$ function for checking the validity of the central limit theorem. *Hint* The function will consist of two parameters: clt_function <- function($\mathsf{n}$, $\mathsf{distr}$), where the first one is the sampe size and the second one is the kind of distribution from which you generate. Use plots for visualizing the results.
+- Write a general $\mathsf{R}$ function for checking the validity of the central limit theorem. *Hint* The function will consist of two parameters: clt_function <- function($\mathsf{n}$, $\mathsf{distr}$), where the first one is the sample size and the second one is the kind of distribution from which you generate. Use plots for visualizing the results.
+
+```{r}
+clt_function <- function(n, distr){
+  
+  sample_means <- rowMeans(matrix(distr, n))
+  
+}
+
+set.seed(42)
+clt_pois <- clt_function(10000, rpois(1000*1000,5))
+clt_gamma <- clt_function(10000,rgamma(1000 * 1000, shape = 4 ,rate = 0.5))
+
+
+par(mfrow=c(2,2))
+
+hist(rpois(1000*1000,5))
+hist(clt_pois,prob=TRUE, col="grey")
+lines(density(clt_pois), col="red", lwd=2)
+
+hist(rgamma(100 * 100, shape = 4 ,rate = 0.5))
+hist(clt_gamma,prob=TRUE, col="grey")
+lines(density(clt_gamma), col="red", lwd=2)
+```
