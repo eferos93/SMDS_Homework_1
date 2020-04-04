@@ -22,8 +22,7 @@ For the data frame ais (DAAG package)
 
 ```{r}
 library(DAAG)
-for (col in names(ais))
-{
+for (col in names(ais)) {
   str(ais[col])
 }
 #second method
@@ -33,11 +32,9 @@ str(ais)
 #subset(ais,is.na(ais)) #select for columns
 
 #second option
-if(any(is.na(ais)))
-{
+if(any(is.na(ais))) {
   print("Some columns have Na Values")
-}else
-{ 
+}else { 
   print("No missing values")
 }
 
@@ -159,7 +156,6 @@ cutoff.
    is expected.
 2. Obtain the vector “ex01.36” from the Devore6 (or Devore7) package. These data give the times required for individuals to escape from an oil platform during a drill. Use dotplot() to show the distribution of times. Calculate the proportion of escape times that exceed 7 minutes.
 ```{r}
-
 library(purrr) #lib for functional programming tools
 library(Devore7)
 #' Return the ration of elements in x that that exceed a cutoff value
@@ -167,7 +163,7 @@ library(Devore7)
 #' @param cutoff A number 
 #' @return Ratio of elements in x that exceed cutoff value
 #' @examples
-#' proportion_exceed(1:50, 25) -> 0.5
+#' proportion_exceeding(1:50, 25) -> 0.5
 proportion_exceeding <- function(x, cutoff){
   if(!is.numeric(x) || !is.numeric(cutoff)){
     stop("Both arguments have to be numeric!")
@@ -177,18 +173,19 @@ proportion_exceeding <- function(x, cutoff){
   n_exceeding <- x %>% keep(function(el) el > cutoff) %>% length
   return(n_exceeding/n)
 }
+```
+```{r}
 proportion_exceeding(1:100, 99)
-
-
+```
+```{r}
 data(ex01.36)
 dotplot(C1 ~ 1:length(C1), data = ex01.36, ylim=0:450,
         horizontal = FALSE, xlab="Individuals", ylab="Time (seconds)")
+```
 
+```{r}
 #proportion of the excape times that exceeds 7 minutes
 proportion_exceeding(ex01.36$C1, 7*60) # ~3,85%
-
-
-
 ```
 
 ## Exercise 13.
@@ -436,6 +433,8 @@ curve(dgamma(x, alpha, beta), col="blue", xlim=c(800, 1200), lwd = 1, add = TRUE
 
 ```{r}
 qgamma(0.05, 3, 3)
+```
+```{r}
 qgamma(0.95, 3, 3)
 ```
 
@@ -453,23 +452,17 @@ qgamma(0.95, 3, 3)
 - Instead of using the built-in function $\mathsf{ecdf()}$, write your own $\mathsf{R}$ function for the empirical cumulative distribution function and reproduce the two plots above.
 
 ```{r}
+library(purrr)
 my_ecdf <-  function(sample, x=NULL){
   
-  sample <- sort(unique(sample))
+  #sample <- sort(unique(sample))
   
   if(is.null(x)){
     ecdf_sample <- (1:length(sample)) / length(sample) 
     ecdf_sample
-  }
-  
-  else {
-    minors <- 0
-    for(n in sample){
-      if(n <= x ){
-        minors = minors + 1
-      }
-    };
-    minors/ length(sample)
+  } else {
+    minors <- sample %>% keep(function(elem) elem <= x) %>% length
+    minors / length(sample)
   }
 }
 
@@ -500,8 +493,47 @@ Compare in $\mathsf{R}$ the assumption of normality for these samples:
 
 - $y_1, \ldots, y_{100} \sim t_{\nu},$ with $\nu=5,20, 100$. What does it happens when the number of degrees of freedom $\nu$ increases?
 
+```{r}
+nu <- c(5,20,100)
+n <- 100
+y <- matrix(data = 0,nrow = length(nu), ncol = n)
+for (row in 1:length(nu)) {
+  y[row,] <- rt(100, df = nu[row])
+}
+for (i in 1:length(nu)) {
+  print( paste("nu: ", nu[i], "; mean: ", mean(y[i,]), "; variance: ", var(y[i,]) ))  
+}
+
+par(mfrow=c(1,3))
+for (i in 1:length(nu)) {
+  qqplot(qt(ppoints(n), nu[i]),
+         y[i,], 
+         xlab="Normal(0,1) quantiles", ylab="Sample quantiles", 
+         main = paste("Q-Q plot for t(", nu[i], "): n=100"))
+  qqline(y[i,],
+         distribution = qnorm,
+         probs = c(0.05, 0.95), col=2)
+}
+```
+From the qqplots it is possible to observe that by increasing the degrees of freedom the mean of the sample mean tends to 0. (??)
+
 - $y_1, \ldots, y_{100} \sim \mbox{Cauchy}(0,1)$. Do you note something weird for the extremes quantiles? 
 
+```{r}
+n <- 100
+y <- rcauchy(100)
+
+print( paste("mean: ", mean(y), "; variance: ", var(y) ))  
+
+qqplot(qcauchy(ppoints(n)),
+       y, 
+       xlab="Cauchy(0,1) quantiles", ylab="Sample quantiles", 
+       main = paste("Q-Q plot for Cauchy(0,1): n=100"))
+qqline(y,
+       distribution = qnorm,
+       probs = c(0.05, 0.95), col=2)
+```
+The extreme quantiles are very far from the Normal quatiles line and also from the central sample quantiles, in fact the sample variance is very high.
 
 ## Exercise 8
 
