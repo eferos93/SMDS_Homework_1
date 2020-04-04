@@ -1,6 +1,6 @@
 ---
 title: "Homework 1 - Group G"
-author: "Matilde Castelli - Dogan Demirbilek - Eros Fabrici - Elena Peressi"
+author: "Matilde Castelli - Dogan Demirbilek - Eros Fabrici"
 #output: html_notebook
 output:
   html_document:
@@ -84,17 +84,17 @@ print(Manitoba.lakes)
 
 ```
 
-(a) Use the following code to plot log2(area) versus elevation, adding labeling infor-
-mation (there is an extreme value of area that makes a logarithmic scale pretty much
+(a) Use the following code to plot log2(area) versus elevation, adding labeling information (there is an extreme value of area that makes a logarithmic scale pretty much
 essential):
 
-```
+```{r}
+library(DAAG)
 attach(Manitoba.lakes)
-plot(log2(area)  ̃ elevation, pch=16, xlim=c(170,280))
+plot(log2(area) ~ elevation, pch=16, xlim=c(170,280))
 # NB: Doubling the area increases log2(area) by 1.0
-text(log2(area)  ̃ elevation,
+text(log2(area) ~ elevation,
 labels=row.names(Manitoba.lakes), pos=4)
-text(log2(area)  ̃ elevation, labels=area, pos=2)
+text(log2(area) ~ elevation, labels=area, pos=2)
 title("Manitoba’s Largest Lakes")
 detach(Manitoba.lakes)
 ```
@@ -110,13 +110,13 @@ example.]
 ```{r}
 library(DAAG)
 attach(Manitoba.lakes) 
-plot(area ~ elevation, pch=16, xlim = c(170,260), log = "y")
-text(area ~ elevation,
+plot(y = log(area), x = elevation, pch=16, xlim = c(170,260), log = "y")
+# NB: 10 x area increases log(area) by 1.0
+text(log(area) ~ elevation,
      labels=row.names(Manitoba.lakes), pos=4)
-text(area ~ elevation, labels=area, pos=2)
+text(log(area) ~ elevation, labels=area, pos=2)
 title("Manitoba’s Largest Lakes")
 detach(Manitoba.lakes)
-
 ```
 
 
@@ -206,6 +206,14 @@ plot(log(brain) ~ log(body), data=Animals)
 par(mfrow=c(1,1)) # Restore to 1 figure per page
 ```
 
+<<<<<<< HEAD
+=======
+- The top left graph shows the original data,the weight of body in kg and the weight of brain in g. We can observe that the range of values is very wide and only few points are much larger than the rest of the data. This leads to uninformative and unclear representation, since the majority of the data are massed close to the origin and we can not retrieve any information about any possible relationship between the variables.
+- In the top right graph the application of the square root transformation is not sufficient to minimize the effect of outliers, and the representation of data is not yet very clear.
+- In the bottom left graph this transformation highlghts more clearly a sort of correlation between values. 
+- In the bottom right log-log plot the effect of outliers is minimized, reducing wide range of values to a more manageable size. Data are equally spreaded and thus the correlation between the two weights is underlined.
+
+>>>>>>> d5830947d2dde70c79f711802b53bd4dd79bc3b5
 
 ## Exercise 15.
 
@@ -243,6 +251,7 @@ Now set `x <- NULL` and repeat each of the calculations `seq(1, length(x))` and 
 
 Which version of the calculation should be used in order to return a vector of length 0 in the event that the supplied argument is `NULL.`
 
+<<<<<<< HEAD
 The second, because `seq(1, length(x))` is interpreted as `seq(from = 1, to = 0)` therefore producing the vector `[1,0]`, while `seq(along=x)` should generate a sequence `1, 2, ..., lenght(x)` but as `length(x)` is equal to 0, it will return a vector of lenght 0.
 
 ```{r}
@@ -253,6 +262,9 @@ seq(along=x)
 
 
 #### Exercise 20
+=======
+## Exercise 20
+>>>>>>> d5830947d2dde70c79f711802b53bd4dd79bc3b5
 
 The help page for iris (type help(iris)) gives code that converts the data in
 iris3 (datasets package) to case-by-variable format, with column names “Sepal.Length”,“Sepal.Width”, “Petal.Length”, “Petal.Width”, and “Species”. Look up the help pages for the functions that are used, and make sure that you understand them. Then add annotation to this code that explains each step in the computation.
@@ -263,9 +275,9 @@ iris3 (datasets package) to case-by-variable format, with column names “Sepal.
 
 ## Exercise 1.1
 
-Exponential random variable, X ≥ 0, has p.d.f. f(x) = λ exp(−λ^x).
+**Exponential random variable, X ≥ 0, has p.d.f. f(x) = λ exp(−λ^x).**
 
-1. Find the c.d.f. and the quantile function for X.
+**1. Find the c.d.f. and the quantile function for X.**
 
 To find c.d.f of $f(x)$, we need to integrate it from $0$ to $x$.
 
@@ -285,7 +297,7 @@ $$
      Q(p; \lambda) = \frac{\ln(1-p)}{\lambda}
 $$
 
-2. Find Pr(X < λ) and the median of X.
+**2. Find Pr(X < λ) and the median of X.**
 
 By using c.d.f function that we found before
 $Pr(X < λ) = 1 - e^{-\lambda^2}$
@@ -296,7 +308,7 @@ Q(p = \frac{2}{4}; \lambda)\\
 =-\ln(1/2)\lambda
 $$
 
-3. Find the mean and variance of X.
+**3. Find the mean and variance of X.**
 Mean
 $$
 E[X] = \int_{0}^{+\infty} xf(x) \; dx \\
@@ -323,7 +335,29 @@ $$
 
 ## Exercise 1.2
 
-Evaluate Pr(X < 0.5, Y < 0.5) if X and Y have joint p.d.f. (1.2).
+**Evaluate Pr(X < 0.5, Y < 0.5) if X and Y have joint p.d.f. (1.2).**
+
+
+The given joint p.d.f. of $X,Y$ is:
+
+$$f(x,y) = \begin{cases}x+\frac{3}{2}y^2 & \mbox{if }0<x<1 \mbox{ and } 0<y<1\\0 & \mbox{otherwise} \end{cases}$$
+The joint pdf is the function $f(x,y)$ such that, if $\Omega$ is any region in the $x-y$ plane,
+$$Pr\{(X,Y)\in \Omega\} = \int\int_{\Omega} f(x,y)\, dx \, dy$$ 
+with $f(x,y) \geq 0$ and $\int_{-\infty}^{\infty}\int_{-\infty}^{\infty}f(x,y)\, dx\, dy = 1$.
+
+We want to evaluate the probability from the joint p.d.f, in the region $\Omega = \{(x,y)|0\le x \le 0.5, 0\le y \le0.5\}$. 
+We have that:
+
+$$
+\begin{aligned}
+Pr(X < 0.5, Y < 0.5) &= \int_{0}^{0.5}\int_{0}^{0.5} f(x,y) \,dx\,dy \\[5pt]
+&= \int_{0}^{0.5}\int_{0}^{0.5} x+\frac{3}{2}y^2 \,dx\,dy \\[5pt]
+&= \int_{0}^{0.5}[\frac{1}{2}x^2+\frac{3}{2}y^2x]_{x=0}^{x=0.5}\,dy \\[5pt]
+&= \int_{0}^{0.5}\frac{1}{8}+\frac{3}{4}y^2\,dy \\[5pt]
+&= [\frac{1}{8}y+\frac{1}{4}y^3]_{y=0}^{y=0.5} \\[5pt]
+&= \frac{1}{16} + \frac{1}{32} = \frac{3}{32} = 0.09357
+\end{aligned}
+$$
 
 $$
 Pr(X<0.5, Y<0.5) = F_{X,Y}(0.5, 0.5)\\
@@ -332,6 +366,7 @@ $$
 
 ## Exercise 1.6
 
+<<<<<<< HEAD
 Let X and Y be non-independent random variables, such that $var(X) = σ^2_x$, $var(Y ) = σ^2_y$ and $cov(X, Y ) = σ^2_{xy}$. Using the result from Section 1.6.2, find var(X + Y) and var(X − Y).
 
 As $X$ $Y$ are dependent, we have that
@@ -342,25 +377,94 @@ Var(X+Y) = Var(X) + Var(Y) + 2Cov(X,Y)\\
 Var(X-Y) = Var(X) + Var(Y) - 2Cov(X,Y)\\
 = \sigma^2_x + \sigma^2_y - 2\sigma^2_{xy}
 $$
+=======
+Let X and Y be non-independent random variables, such that $var(X) = σ^2_x$, $var(Y ) = σ^2_y$ and $cov(X, Y ) = σ^2_{xy}$. Using the result from Section 1.6.2, find var(X + Y ) and var(X − Y ).
+>>>>>>> d5830947d2dde70c79f711802b53bd4dd79bc3b5
 
 ## Exercise 1.8
 
 If $log(X) ∼ N(μ, σ^2)$, find the p.d.f. of X.
 
+
+$Let\space Y = log(X) \space so \space X = e^Y\\$
+According to change of variable technique in p.d.f
+$f_x(X) = f_y(v^{-1}(x))\times|(v^{-1})'(x)|$ where $v^{-1}(y)$ is inverse  function of $X$ which is $log(x)$
+
+$$
+f_x(x) = \frac{1}{x} \frac{1}{\sqrt{2\pi}\sigma} exp\left({\frac{-(log(x)- \mu)^2}{2\sigma^2}}\right)
+$$
+
+
+
+
 ## Exercise 1.9
 
-Discrete random variable Y has a Poisson distribution with parameter λ if its p.d.f. is $f(y) = λ^ye^{−\lambda}/y!$, for $y = 0, 1,$ . . .
+**Discrete random variable Y has a Poisson distribution with parameter λ if its p.d.f. is $f(y) = λ^ye^{−\lambda}/y!$, for $y = 0, 1,$ . . .**
 
-1. Find the moment generating function for Y (hint: the power series representation of the exponential function is useful).
-2. If Y1 ∼ Poi(λ1) and independently Y2 ∼ Poi(λ2), deduce the distribution of Y1 + Y2, by employing a general property of m.g.f.s.
-3. Making use of the previous result and the central limit theorem, deduce the normal approximation to the Poisson distribution.
-4. Confirm the previous result graphically, using R functions dpois, dnorm, plot or barplot and lines. Confirm that the approximation improves with increasing λ
+**1. Find the moment generating function for Y (hint: the power series representation of the exponential function is useful).**
+
+The moment generating function is defined as $M_X(s) = E(e^{sX})$, with $s$ real. Since the Poisson distribution is discrete we have that:
+
+$$
+\begin{aligned}
+M_Y(s) = E(e^{sY}) &= \sum^\infty_{x=0}e^{sy} \frac{\lambda^y e^{−\lambda}}{y!} \\
+&= e^{-\lambda} \sum^\infty_{x=0}\frac{(\lambda e^s)^y}{y!}
+\end{aligned}
+$$
+Recalling the power series representation of the exponential function $\sum^\infty_{k=0}\frac{x^k}{k!} = e^x$, $M_Y(s)$ can be rewritten as:
+
+$$M_Y(s) = e^{-\lambda}e^{\lambda e^s} = e^{\lambda(e^s - 1)}$$
+
+**2. If $Y_1∼Poi(λ_1)$ and independently $Y_2 ∼ Poi(λ_2)$, deduce the distribution of $Y_1 + Y_2$, by employing a general property of m.g.f.s.**
+
+Given that $Y_1$ and $Y_2$ are independent random variables, we can exploit the property: $M_{X + Y}(s) = M_{X}(s)M_{Y}(s)$  
+
+So we have:
+$$M_{Y_1 + Y_2}(s) = M_{Y_1}(s)M_{Y_2}(s) = e^{\lambda_1(e^s - 1)}e^{\lambda_2(e^s - 1)} = e^{ \lambda_1(e^s - 1)+\lambda_2(e^s - 1)} = e^{(\lambda_1 + \lambda_2)(e^s - 1)}$$
+From this moment generating function we can deduce that $Y_1 + Y_2 \sim \mbox{Pois}(\lambda_1 + \lambda_2)$
+
+**3. Making use of the previous result and the central limit theorem, deduce the normal approximation to the Poisson distribution.**
+
+Consider n independent Poisson variables $X_1,X_2,...,X_n$ with mean $\lambda/n$, $X_i \sim Pois(\lambda/n) \text{ for } i=1,...,n$. In the previous point we show that the sum of independent Poisson r.v. is a Poisson random variable $Y= \sum_{i=1}^nX_i \sim Pois(\lambda)$ , where $\lambda = \sum_{i=1}^{n} \lambda_i$
+ 
+
+$$Y \sim N(\mu = \lambda, \sigma^2 = \lambda)$$
+Thus, if $\lambda$ is large the distribution $\mbox{Pois}(\lambda)$ gets approximated well by the distribution $N(\lambda, \lambda)$
+
+**4. Confirm the previous result graphically, using R functions dpois, dnorm, plot or barplot and lines. Confirm that the approximation improves with increasing λ**
+
+```{r}
+lambda <- c(10, 25, 50, 75 ,100)
+n <- 150
+x <- 1:n
+
+d<-c()
+
+par(mfrow=c(1,2))
+plot(x, dpois(x,10),xlim=c(0,n), ylim=c(0,0.2), type = "l",
+     col = "green", xlab = "x", ylab = "y",  lwd = 3)
+
+for(l in lambda){
+    
+    y1 = dpois(x,l)
+    y2 = dnorm(x,l,sqrt(l))
+    # investigate approximation as lambda increases
+    d<-c(d,max(abs(y2-y1)))
+   
+    lines(x, y1,  col = "green", type = "h",  lwd = 3)
+    lines(x, y2, col = "black", type = "l",  lwd = 2)
+}
+legend("topright", legend=c("Poisson distribution", "Normal distribution"), fill=c("green", "black"))
+
+plot(lambda,d, main = "Approximation increasing lambda", cex.main=1.0, pch = 19, col="black", type = "o", xlab = "lambda", ylab = "abs(difference)" )
+```
+
 
 # LAB: **Laboratory**
 
 ## Exercise 1
-Write a function binomial(x,n,p) for the binomial distribution above, depending on parameters x,n,p, and test it with some prespecified values. Use the function choose() for the binomial coefficient.
-Plot two binomials with n=20, and p=0.3,0.6 respectively.
+**Write a function binomial(x,n,p) for the binomial distribution above, depending on parameters x,n,p, and test it with some prespecified values. Use the function choose() for the binomial coefficient.**
+**Plot two binomials with n=20, and p=0.3,0.6 respectively.**
 
 
 The r.v. $X$ that counts the number of successes has **binomial distribution** with probability
@@ -373,13 +477,9 @@ $$
 mybinom <- function(x,n,p){
   return( choose( n,x )*( p^{x} )*( (1-p)^{n-x} ) )
 }
-#test
-print("n = 20, p=0.3")
-mybinom(0:20,20,0.2)
-print("p=0.3")
-mybinom(0:20,20,0.3)
-print("p=0.6")
-mybinom(0:20,20,0.6)
+ # Test with some prespecified values.
+all.equal(mybinom(2,20,0.2), dbinom(2,20,0.2))
+all.equal(mybinom(4,5,0.2), dbinom(4,5,0.2))
 
 ```
 
@@ -408,7 +508,7 @@ for (j in 1:3) {
 
 matrix_mini[,4] <- rowSums(matrix_mini[,1:3])
 
-hist(matrix_mini[,4])
+hist(matrix_mini[,4],col="grey", main ="Histogram of Sum of Three Geometric Dist. Sample",xlim = c(0,1000))
 
 ```
 
@@ -443,9 +543,46 @@ qgamma(0.95, 3, 3)
 
 - Generate $n=1000$ values from a $\mbox{Beta}(5,2)$ and compute the sample mean and the sample variance.
 
+```{r}
+n <- 1000
+
+sample <- rbeta(n,5,2)
+
+mean <- mean(sample)
+sprintf("Sample mean is: %s ", mean)
+
+variance <- var(sample)
+cat("Sample variance is ",variance)
+#hist(sample, breaks=40, probability=TRUE)
+
+```
+
+
 
 ## Exercise 5
 - Analogously, show with a simple $\mathsf{R}$ function that a negative binomial distribution may be seen as a mixture between a Poisson and a Gamma. In symbols: $X|Y \sim \mathcal{P}(Y)$, $Y \sim \mbox{Gamma}(\alpha, \beta)$, then $X \sim \ldots$.
+
+```{r}
+nb_mixture <- function(df,n){
+  lambda = rgamma(n,df,df)
+  X = rpois(n,lambda)
+  return(X)
+}
+
+df<-5
+n<-10000
+
+# Plot of the mixture distribution - PoissonGamma - in black:
+pois_Gamma <- nb_mixture(df,n)
+plot( density(pois_Gamma), col="green", lwd=1, type="h",
+main="Negative Binomial distribution and Poisson-Gamma mixture",cex.main=1.0)
+
+# Negative Binomial distribution superposition - in red:
+Nbinom <- c(rnbinom(n, size=df, prob=df/(df+1)))
+lines( density(Nbinom), col="black", lwd=2 )
+legend("topright", legend=c("Pois-Gamma Mixture", "Negative Binomial"), fill=c("green", "black"))
+```
+
 
 ## Exercise 6
 
@@ -537,4 +674,27 @@ The extreme quantiles are very far from the Normal quatiles line and also from t
 
 ## Exercise 8
 
-- Write a general $\mathsf{R}$ function for checking the validity of the central limit theorem. *Hint* The function will consist of two parameters: clt_function <- function($\mathsf{n}$, $\mathsf{distr}$), where the first one is the sampe size and the second one is the kind of distribution from which you generate. Use plots for visualizing the results.
+- Write a general $\mathsf{R}$ function for checking the validity of the central limit theorem. *Hint* The function will consist of two parameters: clt_function <- function($\mathsf{n}$, $\mathsf{distr}$), where the first one is the sample size and the second one is the kind of distribution from which you generate. Use plots for visualizing the results.
+
+```{r}
+clt_function <- function(n, distr){
+  
+  sample_means <- rowMeans(matrix(distr, n))
+  
+}
+
+set.seed(42)
+clt_pois <- clt_function(10000, rpois(1000*1000,5))
+clt_gamma <- clt_function(10000,rgamma(1000 * 1000, shape = 4 ,rate = 0.5))
+
+
+par(mfrow=c(2,2))
+
+hist(rpois(1000*1000,5),main = "Histogram of Poisson Dist.")
+hist(clt_pois,prob=TRUE, col="grey")
+lines(density(clt_pois), col="red", lwd=2)
+
+hist(rgamma(1000 * 1000, shape = 4 ,rate = 0.5), main = "Histogram of Gamma Dist.")
+hist(clt_gamma,prob=TRUE, col="grey")
+lines(density(clt_gamma), col="red", lwd=2)
+```
