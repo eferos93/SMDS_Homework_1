@@ -22,8 +22,7 @@ For the data frame ais (DAAG package)
 
 ```{r}
 library(DAAG)
-for (col in names(ais))
-{
+for (col in names(ais)) {
   str(ais[col])
 }
 #second method
@@ -33,11 +32,9 @@ str(ais)
 #subset(ais,is.na(ais)) #select for columns
 
 #second option
-if(any(is.na(ais)))
-{
+if(any(is.na(ais))) {
   print("Some columns have Na Values")
-}else
-{ 
+}else { 
   print("No missing values")
 }
 
@@ -138,7 +135,7 @@ gender <- factor(gender, levels=c("Male", "female"))
 # Note the mistake: "Male" should be "male"
 table(gender)
 table(gender, exclude=NULL)
-#rm(gender) # Remove gender
+rm(gender) # Remove gender
 ```
 
 Explain the output from the successive uses of `table()`.
@@ -158,6 +155,38 @@ cutoff.
 1. Use the sequence of numbers 1, 2, . . . , 100 to check that this function gives the result that
    is expected.
 2. Obtain the vector “ex01.36” from the Devore6 (or Devore7) package. These data give the times required for individuals to escape from an oil platform during a drill. Use dotplot() to show the distribution of times. Calculate the proportion of escape times that exceed 7 minutes.
+```{r}
+library(purrr) #lib for functional programming tools
+library(Devore7)
+#' Return the ration of elements in x that that exceed a cutoff value
+#' @param x A vector/list of numeric values
+#' @param cutoff A number 
+#' @return Ratio of elements in x that exceed cutoff value
+#' @examples
+#' proportion_exceeding(1:50, 25) -> 0.5
+proportion_exceeding <- function(x, cutoff){
+  if(!is.numeric(x) || !is.numeric(cutoff)){
+    stop("Both arguments have to be numeric!")
+  }
+  
+  n <- x %>% length
+  n_exceeding <- x %>% keep(function(el) el > cutoff) %>% length
+  return(n_exceeding/n)
+}
+```
+```{r}
+proportion_exceeding(1:100, 99)
+```
+```{r}
+data(ex01.36)
+dotplot(C1 ~ 1:length(C1), data = ex01.36, ylim=0:450,
+        horizontal = FALSE, xlab="Individuals", ylab="Time (seconds)")
+```
+
+```{r}
+#proportion of the excape times that exceeds 7 minutes
+proportion_exceeding(ex01.36$C1, 7*60) # ~3,85%
+```
 
 ## Exercise 13.
 
@@ -219,7 +248,16 @@ Now set `x <- NULL` and repeat each of the calculations `seq(1, length(x))` and 
 
 Which version of the calculation should be used in order to return a vector of length 0 in the event that the supplied argument is `NULL.`
 
-## Exercise 20
+The second, because `seq(1, length(x))` is interpreted as `seq(from = 1, to = 0)` therefore producing the vector `[1,0]`, while `seq(along=x)` should generate a sequence `1, 2, ..., lenght(x)` but as `length(x)` is equal to 0, it will return a vector of lenght 0.
+
+```{r}
+x <- NULL
+seq(1, length(x))
+seq(along=x)
+```
+
+
+#### Exercise 20
 
 The help page for iris (type help(iris)) gives code that converts the data in
 iris3 (datasets package) to case-by-variable format, with column names “Sepal.Length”,“Sepal.Width”, “Petal.Length”, “Petal.Width”, and “Species”. Look up the help pages for the functions that are used, and make sure that you understand them. Then add annotation to this code that explains each step in the computation.
@@ -238,7 +276,7 @@ To find c.d.f of $f(x)$, we need to integrate it from $0$ to $x$.
 
 $$
 f(x) = \lambda e^{-\lambda x} \\
-F(x) = P(X <= x) \\
+F(x) = P(X \leq x) \\
      = \int_{0}^{x} f(w) \; dw \\
      = \int_{0}^{x} \lambda e^{-\lambda w} \; dw \\
      = [-\lambda e^{-\lambda w}]_{0}^{x} \\
@@ -314,9 +352,23 @@ Pr(X < 0.5, Y < 0.5) &= \int_{0}^{0.5}\int_{0}^{0.5} f(x,y) \,dx\,dy \\[5pt]
 \end{aligned}
 $$
 
+$$
+Pr(X<0.5, Y<0.5) = F_{X,Y}(0.5, 0.5)\\
+= \int_{-\infty}^{0.5}\int_{-\infty}^{0.5}f_{X,Y}(x,y)\;dydx
+$$
+
 ## Exercise 1.6
 
-Let X and Y be non-independent random variables, such that $var(X) = σ^2_x$, $var(Y ) = σ^2_y$ and $cov(X, Y ) = σ^2_{xy}$. Using the result from Section 1.6.2, find var(X + Y ) and var(X − Y ).
+Let X and Y be non-independent random variables, such that $var(X) = σ^2_x$, $var(Y ) = σ^2_y$ and $cov(X, Y ) = σ^2_{xy}$. Using the result from Section 1.6.2, find var(X + Y) and var(X − Y).
+
+As $X$ $Y$ are dependent, we have that
+$$
+Var(X+Y) = Var(X) + Var(Y) + 2Cov(X,Y)\\
+= \sigma^2_x + \sigma^2_y + 2\sigma^2_{xy}\\
+
+Var(X-Y) = Var(X) + Var(Y) - 2Cov(X,Y)\\
+= \sigma^2_x + \sigma^2_y - 2\sigma^2_{xy}
+$$
 
 ## Exercise 1.8
 
@@ -412,8 +464,7 @@ $$
 
 ```{r}
 mybinom <- function(x,n,p){
-  y <- (choose(n,x)*(p^{x})*((1-p)^{n-x}))
-return(y)
+  return( choose( n,x )*( p^{x} )*( (1-p)^{n-x} ) )
 }
  # Test with some prespecified values.
 all.equal(mybinom(2,20,0.2), dbinom(2,20,0.2))
@@ -456,8 +507,25 @@ hist(matrix_mini[,4],col="grey", main ="Histogram of Sum of Three Geometric Dist
 ## Exercise 3
 - Show in $\mathsf{R}$, also graphically, that $\mbox{Gamma}(n/2, 1/2)$ coincides with a $\chi^{2}_{n}$.
 
+$$
+Gamma(x;\frac{n}{2}, \frac{1}{2}) = \frac{\bigg( \frac{1}{2} \bigg)^{\frac{1}{2}}}{\Gamma(\frac{n}{2})}x^{\frac{n}{2}-1}e^{-\frac{x}{2}}\\
+= \frac{1}{2^{\frac{n}{2}}\Gamma(\frac{n}{2})} x^{\frac{n}{2}-1}e^{-\frac{n}{2}} = \chi^2_n(x)
+$$
+
+```{r}
+d_of_freedom <- 1000; alpha <- d_of_freedom/2; beta <- 1/2;
+curve(dchisq(x, d_of_freedom), col="red", xlim=c(800, 1200), lwd = 3, ylab = "Density")
+curve(dgamma(x, alpha, beta), col="blue", xlim=c(800, 1200), lwd = 1, add = TRUE)
+```
+
 - Find the 5\% and the 95\% quantiles of a $\mbox{Gamma}(3,3)$. 
 
+```{r}
+qgamma(0.05, 3, 3)
+```
+```{r}
+qgamma(0.95, 3, 3)
+```
 
 
 ## Exercise 4
@@ -510,23 +578,17 @@ legend("topright", legend=c("Pois-Gamma Mixture", "Negative Binomial"), fill=c("
 - Instead of using the built-in function $\mathsf{ecdf()}$, write your own $\mathsf{R}$ function for the empirical cumulative distribution function and reproduce the two plots above.
 
 ```{r}
+library(purrr)
 my_ecdf <-  function(sample, x=NULL){
   
-  sample <- sort(unique(sample))
+  #sample <- sort(unique(sample))
   
   if(is.null(x)){
     ecdf_sample <- (1:length(sample)) / length(sample) 
     ecdf_sample
-  }
-  
-  else {
-    minors <- 0
-    for(n in sample){
-      if(n <= x ){
-        minors = minors + 1
-      }
-    };
-    minors/ length(sample)
+  } else {
+    minors <- sample %>% keep(function(elem) elem <= x) %>% length
+    minors / length(sample)
   }
 }
 
@@ -557,8 +619,47 @@ Compare in $\mathsf{R}$ the assumption of normality for these samples:
 
 - $y_1, \ldots, y_{100} \sim t_{\nu},$ with $\nu=5,20, 100$. What does it happens when the number of degrees of freedom $\nu$ increases?
 
+```{r}
+nu <- c(5,20,100)
+n <- 100
+y <- matrix(data = 0,nrow = length(nu), ncol = n)
+for (row in 1:length(nu)) {
+  y[row,] <- rt(100, df = nu[row])
+}
+for (i in 1:length(nu)) {
+  print( paste("nu: ", nu[i], "; mean: ", mean(y[i,]), "; variance: ", var(y[i,]) ))  
+}
+
+par(mfrow=c(1,3))
+for (i in 1:length(nu)) {
+  qqplot(qt(ppoints(n), nu[i]),
+         y[i,], 
+         xlab="Normal(0,1) quantiles", ylab="Sample quantiles", 
+         main = paste("Q-Q plot for t(", nu[i], "): n=100"))
+  qqline(y[i,],
+         distribution = qnorm,
+         probs = c(0.05, 0.95), col=2)
+}
+```
+From the qqplots it is possible to observe that by increasing the degrees of freedom the mean of the sample mean tends to 0. (??)
+
 - $y_1, \ldots, y_{100} \sim \mbox{Cauchy}(0,1)$. Do you note something weird for the extremes quantiles? 
 
+```{r}
+n <- 100
+y <- rcauchy(100)
+
+print( paste("mean: ", mean(y), "; variance: ", var(y) ))  
+
+qqplot(qcauchy(ppoints(n)),
+       y, 
+       xlab="Cauchy(0,1) quantiles", ylab="Sample quantiles", 
+       main = paste("Q-Q plot for Cauchy(0,1): n=100"))
+qqline(y,
+       distribution = qnorm,
+       probs = c(0.05, 0.95), col=2)
+```
+The extreme quantiles are very far from the Normal quatiles line and also from the central sample quantiles, in fact the sample variance is very high.
 
 ## Exercise 8
 
