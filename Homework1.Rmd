@@ -158,6 +158,7 @@ cutoff.
 ```{r}
 library(purrr) #lib for functional programming tools
 library(Devore7)
+
 #' Return the ration of elements in x that that exceed a cutoff value
 #' @param x A vector/list of numeric values
 #' @param cutoff A number 
@@ -196,7 +197,7 @@ What different aspects of the data do these different graphs emphasize? Consider
 ```{r}
 par(mfrow=c(2,2)) # 2 by 2 layout on the page
 library(MASS) # Animals is in the MASS package
-#?Animals
+
 #body weight in kg, brain weight in g.
 plot(brain ~  body, data=Animals)
 plot(sqrt(brain) ~  sqrt(body), data=Animals)
@@ -396,7 +397,7 @@ If $log(X) ∼ N(μ, σ^2)$, find the p.d.f. of X.
 
 $Let\space Y = log(X) \space so \space X = e^Y\\$
 According to change of variable technique in p.d.f
-$f_x(X) = f_y(v^{-1}(x))\times|(v^{-1})'(x)|$ where $v^{-1}(y)$ is inverse  function of $X$ which is $log(x)$
+$f_x(X) = f_y(v^{-1}(x))\times|(v^{-1})'(x)|$ where $v^{-1}(y)$ is inverse  function of $X$ which is $log(X)$
 
 $$
 f_x(x) = \frac{1}{x} \frac{1}{\sqrt{2\pi}\sigma} exp\left({\frac{-(log(x)- \mu)^2}{2\sigma^2}}\right)
