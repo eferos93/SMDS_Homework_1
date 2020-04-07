@@ -110,7 +110,7 @@ example.]
 ```{r}
 library(DAAG)
 attach(Manitoba.lakes) 
-plot(y = area, x = elevation, pch=16, xlim = c(170,260), log = "y")
+plot(y = area, x = elevation, pch=16, xlim = c(170,280), log = "y")
 # NB: 10 x area increases log(area) by 1.0
 text(area ~ elevation,
      labels=row.names(Manitoba.lakes), pos=4)
@@ -685,7 +685,7 @@ for (i in 1:length(nu)) {
 }
 ```
 
-From the qqplots it is possible to observe that by increasing the degrees of freedom the mean of the sample mean tends to 0. (??)
+From the qqplots it is possible to observe that by increasing the degrees of freedom, distribution approximates to normal distribution
 
 - $y_1, \ldots, y_{100} \sim \mbox{Cauchy}(0,1)$. Do you note something weird for the extremes quantiles? 
 
