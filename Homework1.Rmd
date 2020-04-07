@@ -705,7 +705,7 @@ qqline(y,
        probs = c(0.05, 0.95), col=2)
 ```
 
-The extreme quantiles are very far from the Normal quantiles line and also from the central sample quantiles, in fact the sample variance is very high.
+The extreme quantiles are very far from the Normal quantiles line and consequently the sample variance is very high.
 
 ## Exercise 8
 
