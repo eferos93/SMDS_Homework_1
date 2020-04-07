@@ -219,9 +219,10 @@ The data frame `socsupport` (DAAG) has data from a survey on social and other ki
 
 The following are two alternative plots of BDI against age:
 
-```R
-plot(BDI ˜ age, data=socsupport)
-plot(BDI ˜ unclass(age), data=socsupport)
+```{r}
+
+plot(BDI ~ age, data=socsupport)
+plot(BDI ~ unclass(age), data=socsupport)
 ```
 
 - For examination of cases where the score seems very high, which plot is more useful? Explain.
@@ -262,6 +263,10 @@ seq(along=x)
 
 **The help page for iris (type help(iris)) gives code that converts the data in iris3 (datasets package) to case-by-variable format, with column names “Sepal.Length”,“Sepal.Width”, “Petal.Length”, “Petal.Width”, and “Species”. Look up the help pages for the functions that are used, and make sure that you understand them. Then add annotation to this code that explains each step in the computation.**
 
+The dataframe iris is made up of 150 cases (rows) and 5 variables(columns) named Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, and Species.
+
+In iris3 the data are rearranged in a 3-dimensional array of size [50,4,3]. The first dimension gives the case number within the species subsample, the second the measurements named Sepal L., Sepal W., Petal L., and Petal W., and the third the species.
+
 ```{r}
 
 #dimnames_ retrieves names of row and columns of iris3. The output is:
@@ -271,15 +276,16 @@ seq(along=x)
   
 dni3 <- dimnames(iris3) 
 
-# Creates a new dataframe
+# 'data.frame' Creates a new dataframe
 # the function 'aperm' permutates the dimensions of iris3 passing from [50,4,3] to [50,3,4]
 ii <- data.frame(matrix(aperm(iris3, c(1,3,2)), ncol = 4,
                         # the names of columns are obtained from the string character dni3[[2]] 
                         #and 'sub' replaces the first occurence of L. with Length 
-                        #and W. with Width, while the rows are unnamed 
+                        #and W. with Width, while the rows are left unnamed (NULL)
                         dimnames = list(NULL, sub(" L.",".Length",
                                         sub(" W.",".Width", dni3[[2]])))),
-  #'gl',we generate a new factor by specifying, the numbers of levels=3, number of replications=50
+  #'gl',we generate a new factor by specifying, the numbers of levels=3, number of replications=50,
+  #and it is added to the dataframe as 5th column
     Species = gl(3, 50, labels = sub("S", "s", sub("V", "v", dni3[[3]]))))
 # Check if the elements of the new dataframe ii are equal to the original iris.
 # The output is TRUE
@@ -300,12 +306,14 @@ all.equal(ii, iris)
 To find c.d.f of $f(x)$, we need to integrate it from $0$ to $x$.
 
 $$
-f(x) = \lambda e^{-\lambda x} \\
-F(x) = P(X \leq x) \\
-     = \int_{0}^{x} f(w) \; dw \\
-     = \int_{0}^{x} \lambda e^{-\lambda w} \; dw \\
-     = [-\lambda e^{-\lambda w}]_{0}^{x} \\
-     = 1 - e^{-\lambda x} \\
+\begin{aligned}
+f(x) &= \lambda e^{-\lambda x} \\
+F(x) &= P(X \leq x) \\
+     &= \int_{0}^{x} f(w) \; dw \\
+     &= \int_{0}^{x} \lambda e^{-\lambda w} \; dw \\
+     &= [-\lambda e^{-\lambda w}]_{0}^{x} \\
+     &= 1 - e^{-\lambda x} \\
+\end{aligned}
 $$
 
 The quantile function (inverse c.d.f)
@@ -329,24 +337,27 @@ $$
 **3. Find the mean and variance of X.**
 Mean
 $$
-E[X] = \int_{0}^{+\infty} xf(x) \; dx \\
-     = \int_{0}^{+\infty} x\lambda e^{-\lambda x} \; dx  \\
-     = \left[-x e^{-\lambda x}\right]_{0}^{\infty} + \int_{0}^{\infty}e^{-\lambda x}dx   \\
-     = (0-0) + \left[\frac{-1}{\lambda}e^{-\lambda x} \right]_{0}^{\infty} \\
-     = 0 + \left(0 + \frac{1}{\lambda}\right)
+\begin{aligned}
+E[X] &= \int_{0}^{+\infty} xf(x) \; dx \\
+     &= \int_{0}^{+\infty} x\lambda e^{-\lambda x} \; dx  \\
+     &= \left[-x e^{-\lambda x}\right]_{0}^{\infty} + \int_{0}^{\infty}e^{-\lambda x}dx   \\
+     &= (0-0) + \left[\frac{-1}{\lambda}e^{-\lambda x} \right]_{0}^{\infty} \\
+     &= 0 + \left(0 + \frac{1}{\lambda}\right)
      = \frac{1}{\lambda}
+\end{aligned}
 $$
 Variance
 $$
-E[X^2] = \int_{-\infty}^{+\infty} x^2f(x) \; dx \\
-= \int_{0}^{+\infty} x^2\lambda e^{-\lambda x} \; dx \\
-= \left[-x^2e^{-\lambda x}\right]_{0}^{\infty} + \int_{0}^{\infty}2xe^{-\lambda x}dx \\
-= (0-0) + \left[\frac{-2}{\lambda}  x e^{-\lambda x}\right]_{0}^{\infty} + \frac{2}{\lambda} \int_{0}^{\infty}e^{-\lambda x}dx\\
-= (0-0) +\frac{2}{\lambda} \left[\frac{-1}{\lambda}e^{-\lambda x}  \right]_{0}^{\infty}
-= \frac{2}{\lambda^2}\\
-Var[X] = E[X^2] - E[X]^2\\
-We \space already \space know \space E[X] = \frac{1}{\lambda}\\
-Var[X] = \frac{2}{\lambda^2} - \frac{1}{\lambda^2} = \frac{1}{\lambda^2}
+\begin{aligned}
+E[X^2] &= \int_{-\infty}^{+\infty} x^2f(x) \; dx \\
+&= \int_{0}^{+\infty} x^2\lambda e^{-\lambda x} \; dx \\
+&= \left[-x^2e^{-\lambda x}\right]_{0}^{\infty} + \int_{0}^{\infty}2xe^{-\lambda x}dx \\
+&= (0-0) + \left[\frac{-2}{\lambda}  x e^{-\lambda x}\right]_{0}^{\infty} + \frac{2}{\lambda} \int_{0}^{\infty}e^{-\lambda x}dx\\
+&= (0-0) +\frac{2}{\lambda} \left[\frac{-1}{\lambda}e^{-\lambda x}  \right]_{0}^{\infty} = \frac{2}{\lambda^2}\\
+& Var[X] = E[X^2] - E[X]^2\\
+& We \space already \space know \space E[X] = \frac{1}{\lambda}\\
+& Var[X] = \frac{2}{\lambda^2} - \frac{1}{\lambda^2} = \frac{1}{\lambda^2}
+\end{aligned}
 $$
 
 
@@ -382,13 +393,25 @@ $$
 Let X and Y be non-independent random variables, such that $var(X) = σ^2_x$, $var(Y ) = σ^2_y$ and $cov(X, Y ) = σ^2_{xy}$. Using the result from Section 1.6.2, find var(X + Y) and var(X − Y).
 
 As $X$ $Y$ are dependent, we have that
+<<<<<<< HEAD
 
 $$
 Var(X+Y) = Var(X) + Var(Y) + 2Cov(X,Y)\\
 = \sigma^2_x + \sigma^2_y + 2\sigma^2_{xy}\\
+=======
+>>>>>>> e4f6dd4cb48d92b9e9febcb9cc70df3a52b23bdd
 
-Var(X-Y) = Var(X) + Var(Y) - 2Cov(X,Y)\\
-= \sigma^2_x + \sigma^2_y - 2\sigma^2_{xy}
+$$
+\begin{aligned}
+Var(X+Y) &= Var(X) + Var(Y) + 2Cov(X,Y)\\
+&= \sigma^2_x + \sigma^2_y + 2\sigma^2_{xy}
+\end{aligned}
+$$
+$$
+\begin{aligned}
+Var(X-Y) &= Var(X) + Var(Y) - 2Cov(X,Y)\\
+&= \sigma^2_x + \sigma^2_y - 2\sigma^2_{xy}
+\end{aligned}
 $$
 
 ## Exercise 1.8
@@ -435,11 +458,18 @@ From this moment generating function we can deduce that $Y_1 + Y_2 \sim \mbox{Po
 
 **3. Making use of the previous result and the central limit theorem, deduce the normal approximation to the Poisson distribution.**
 
-Consider n independent Poisson variables $X_1,X_2,...,X_n$ with mean $\lambda/n$, $X_i \sim Pois(\lambda/n) \text{ for } i=1,...,n$. In the previous point we show that the sum of independent Poisson r.v. is a Poisson random variable $Y= \sum_{i=1}^nX_i \sim Pois(\lambda)$ , where $\lambda = \sum_{i=1}^{n} \lambda_i$
- 
+Consider n independent and identycally distributed Poisson variables $X_1,X_2,...,X_n$ with mean and variance $\lambda/n$:   $X_i \sim Pois(\lambda/n) \text{ for } i=1,...,n$. 
 
-$$Y \sim N(\mu = \lambda, \sigma^2 = \lambda)$$
-Thus, if $\lambda$ is large the distribution $\mbox{Pois}(\lambda)$ gets approximated well by the distribution $N(\lambda, \lambda)$
+Let $\bar{X_n} = \sum_i^n X_i/n$ be the sample mean, the central limit Theorem  says that in the limit $n \rightarrow \infty$: $$\bar{X_n} \sim \mathcal N(\mu,\sigma^2/n)$$
+
+In the previous point we show that the sum of independent Poisson r.v. is a Poisson random variable $Y= \sum_{i=1}^nX_i \sim Pois(\lambda)$ , where $\lambda = \sum_{i=1}^{n} \lambda_i$. We can see that $Y = n\bar{X}$, since the simple mean is a Gaussian, Y is equivalent to a Gaussian $\bar{X}$ multiplied for a constant n. This linear transformation results in: 
+$$
+Y = n\bar{X} \sim \mathcal N(n\mu,n\sigma^2)
+$$
+Given that $\mu \text{ and } \sigma^2$ are $\lambda/n$, we have that:  
+ $$Y \sim N(\lambda, \lambda)$$
+
+If $\lambda$ is large the distribution $N(\lambda, \lambda)$ approximates the distribution $\mbox{Pois}(\lambda)$
 
 **4. Confirm the previous result graphically, using R functions dpois, dnorm, plot or barplot and lines. Confirm that the approximation improves with increasing λ**
 
@@ -461,7 +491,7 @@ for(l in lambda){
     # investigate approximation as lambda increases
     d<-c(d,max(abs(y2-y1)))
    
-    lines(x, y1,  col = "green", type = "h",  lwd = 3)
+    lines(x, y1,  col = "green", type = "h",  lwd = 1)
     lines(x, y2, col = "black", type = "l",  lwd = 2)
 }
 legend("topright", legend=c("Poisson distribution", "Normal distribution"), fill=c("green", "black"))
@@ -497,9 +527,9 @@ all.equal(mybinom(4,5,0.2), dbinom(4,5,0.2))
 # plot
 par(mfrow=c(1,2),mar=c(4,4,2,1),oma=c(0,0.2,0.2,0), pty="s", pch = 16)
 plot(0:20, mybinom(0:20, 20, 0.3), 
-     xlab = "x", ylab = "f(x)", cex.lab=1.5, main="n=20, p = 0.3", cex.main=1.5, col = 'blue')
+     xlab = "x", ylab = "f(x)", cex.lab=1.0, main="n=20, p = 0.3", cex.main=1.5, col = 'blue')
 plot(0:20, mybinom(0:20, 20, 0.6), 
-     xlab = "x", ylab = "f(x)", cex.lab=1.5, main="n=20, p = 0.6", cex.main=1.5, col = 'blue')
+     xlab = "x", ylab = "f(x)", cex.lab=1.0, main="n=20, p = 0.6", cex.main=1.5, col = 'blue')
 ```
 
  
@@ -581,13 +611,13 @@ nb_mixture <- function(df,n){
 df<-5
 n<-10000
 
-# Plot of the mixture distribution - PoissonGamma - in green:
+# Plot of the mixture Poisson Gamma distribution where alpha= beta = df, in green:
 pois_Gamma <- nb_mixture(df,n)
 plot( density(pois_Gamma), col="green", lwd=1, type="h",
 main="Negative Binomial distribution and Poisson-Gamma mixture",cex.main=1.0)
 
-# Negative Binomial distribution superposition - in black, the probability is (alpha+1/alpha):
-Nbinom <- c(rnbinom(n, size=df, prob=df/(df+1)))
+# Negative Binomial distribution in black, with r = beta and probability =(alpha+1/alpha), :
+Nbinom <- c(rnbinom(n, df, prob=df/(df+1)))
 lines( density(Nbinom), col="black", lwd=2 )
 legend("topright", legend=c("Pois-Gamma Mixture", "Negative Binomial"), fill=c("green", "black"))
 ```
