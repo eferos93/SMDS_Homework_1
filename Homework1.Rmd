@@ -110,11 +110,11 @@ example.]
 ```{r}
 library(DAAG)
 attach(Manitoba.lakes) 
-plot(y = log(area), x = elevation, pch=16, xlim = c(170,260), log = "y")
+plot(y = area, x = elevation, pch=16, xlim = c(170,260), log = "y")
 # NB: 10 x area increases log(area) by 1.0
-text(log(area) ~ elevation,
+text(area ~ elevation,
      labels=row.names(Manitoba.lakes), pos=4)
-text(log(area) ~ elevation, labels=area, pos=2)
+text(area ~ elevation, labels=area, pos=2)
 title("Manitoba’s Largest Lakes")
 detach(Manitoba.lakes)
 ```
