@@ -675,7 +675,7 @@ for (i in 1:length(nu)) {
 
 par(mfrow=c(1,3))
 for (i in 1:length(nu)) {
-  qqplot(qnorm(ppoints(n), nu[i]),
+  qqplot(qnorm(ppoints(n)),
          y[i,], 
          xlab="Normal(0,1) quantiles", ylab="Sample quantiles", 
          main = paste("Q-Q plot for t(", nu[i], "): n=100"))
