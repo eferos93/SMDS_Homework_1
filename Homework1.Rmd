@@ -382,6 +382,7 @@ $$
 Let X and Y be non-independent random variables, such that $var(X) = σ^2_x$, $var(Y ) = σ^2_y$ and $cov(X, Y ) = σ^2_{xy}$. Using the result from Section 1.6.2, find var(X + Y) and var(X − Y).
 
 As $X$ $Y$ are dependent, we have that
+
 $$
 Var(X+Y) = Var(X) + Var(Y) + 2Cov(X,Y)\\
 = \sigma^2_x + \sigma^2_y + 2\sigma^2_{xy}\\
